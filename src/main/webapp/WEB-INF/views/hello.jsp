@@ -1,9 +1,22 @@
-<%@ include file="/WEB-INF/views/include.jsp" %>
+<%@ include file="/WEB-INF/views/include.jsp"%>
 
 <html>
-  <head><title>Hello :: Spring Application</title></head>
-  <body>
-    <h1>Hello - Spring Application</h1>
-    <p>Greetings, it is now <c:out value="${now}"/></p>
-  </body>
+<head>
+<title><fmt:message key="title" /></title>
+</head>
+<body>
+	<h1>
+		<fmt:message key="heading" />
+	</h1>
+	<p>
+		<fmt:message key="greeting" />
+		<c:out value="${myModel.now}" />
+	</p>
+	<h3>Products</h3>
+	<c:forEach items="${myModel.products}" var="prod">
+		<c:out value="${prod.description}" />
+		<i>$<c:out value="${prod.price}" /></i>
+		<br>
+		<br>
+	</c:forEach>
 </html>

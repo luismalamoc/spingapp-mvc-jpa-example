@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mauricio.springapp.domain.Product;
+import com.mauricio.springapp.repository.InMemoryProductDao;
+import com.mauricio.springapp.repository.ProductDao;
 import com.mauricio.springapp.service.SimpleProductManager;
 
 import org.junit.Before;
@@ -42,12 +44,14 @@ public class SimpleProductManagerTests {
         product.setPrice(TABLE_PRICE);
         products.add(product);
         
-        productManager.setProducts(products);
+        ProductDao productDao = new InMemoryProductDao(products);
+        productManager.setProductDao(productDao);
     }
 
     @Test
     public void testGetProductsWithNoProducts() {
         productManager = new SimpleProductManager();
+        productManager.setProductDao(new InMemoryProductDao(null));
         assertNull(productManager.getProducts());
     }
     
@@ -70,6 +74,7 @@ public class SimpleProductManagerTests {
     public void testIncreasePriceWithNullListOfProducts(){
     	try{
     		productManager = new SimpleProductManager();
+    		productManager.setProductDao(new InMemoryProductDao(null));
     		productManager.increasePrice(POSITIVE_PRICE_INCREASE);
     	}catch(NullPointerException ex){
     		fail("Products list is null.");
@@ -80,7 +85,7 @@ public class SimpleProductManagerTests {
     public void testIncreasePriceWithEmptyListOfProducts(){
     	try{
     		productManager = new SimpleProductManager();
-    		productManager.setProducts(new ArrayList<Product>());
+    		productManager.setProductDao(new InMemoryProductDao(new ArrayList<Product>()));
     		productManager.increasePrice(POSITIVE_PRICE_INCREASE);
     	}catch(NullPointerException ex){
     		fail("Products list is empty.");

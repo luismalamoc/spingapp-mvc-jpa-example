@@ -2,8 +2,11 @@ package com.mauricio.springapp.web;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
+import com.mauricio.springapp.domain.Product;
+import com.mauricio.springapp.repository.InMemoryProductDao;
 import com.mauricio.springapp.service.SimpleProductManager;
 import com.mauricio.springapp.web.InventoryController;
 
@@ -16,7 +19,9 @@ public class InventoryControllerTests {
 	@Test
     public void testHandleRequestView() throws Exception{		
         InventoryController controller = new InventoryController();
-        controller.setProductManager(new SimpleProductManager());
+        SimpleProductManager spm = new SimpleProductManager();
+        spm.setProductDao(new InMemoryProductDao(new ArrayList<Product>()));
+        controller.setProductManager(spm);
         ModelAndView modelAndView = controller.handleRequest(null, null);		
         assertEquals("hello", modelAndView.getViewName());
         assertNotNull(modelAndView.getModel());
